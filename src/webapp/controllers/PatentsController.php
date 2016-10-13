@@ -113,7 +113,7 @@ class PatentsController extends Controller
             return;
         }
 
-        $this->app->flash('info', "An error ocurred. Unable to delete user '$username'.");
+        $this->app->flash('info', "Could not delete the patent because the patent does not exist");
         $this->app->redirect('/admin');
     }
 }
