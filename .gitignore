@@ -1,0 +1,7 @@
+# Folders
+vendor/
+
+# Files
+app.db
+composer.phar
+.DS_Store
