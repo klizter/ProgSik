@@ -6,8 +6,22 @@ use PDO;
 use tdt4237\webapp\models\Patent;
 use tdt4237\webapp\models\PatentCollection;
 
+/*
+
+OWASP - Mitigating SQL injection attacks
+https://www.owasp.org/index.php/SQL_Injection_Prevention_Cheat_Sheet
+
+*/
+
+
 class PatentRepository
 {
+    //Prepared queries used by PDO
+    //http://php.net/manual/en/pdo.prepare.php
+    const FIND_PATENT_QUERY = 'SELECT * FROM patent WHERE patentId=?';
+    const FIND_ALL_PATENTS_QUERY = 'SELECT * FROM patent';
+    const DELETE_PATENT_QUERY = 'DELETE FROM patent WHERE patentid=?';
+    const SAVE_PATENT_QUERY = 'INSERT INTO patent (company, date, title, description, file) VALUES (?, ?, ?, ?, ?)';
 
     /**
      * @var PDO
@@ -32,34 +46,30 @@ class PatentRepository
         return $patent;
     }
 
-
+    //Modified with PDP prepare and execute statements
     public function find($patentId)
     {
-        $sql  = "SELECT * FROM patent WHERE patentId = $patentId";
-        $result = $this->pdo->query($sql);
-        $row = $result->fetch();
+
+        $query = $this->pdo->prepare(self::FIND_PATENT_QUERY);
+        $query->execute(array($patentId));
+        $row = $query->fetch();
 
         if($row === false) {
             return false;
         }
 
-
         return $this->makePatentFromRow($row);
     }
 
+    //Modified with PDO prepare and execute statements
     public function all()
     {
-        $sql   = "SELECT * FROM patent";
-        $results = $this->pdo->query($sql);
+        $query = $this->pdo->prepare(self::FIND_ALL_PATENTS_QUERY);
+        $query->execute();
 
-        if($results === false) {
-            return [];
-            throw new \Exception('PDO error in patent all()');
-        }
-
-        $fetch = $results->fetchAll();
+        $fetch = $query->fetchAll();
         if(count($fetch) == 0) {
-            return false;
+            return [];
         }
 
         return new PatentCollection(
@@ -67,13 +77,15 @@ class PatentRepository
         );
     }
 
+    //Modified with PDO prepare and execute statements
     public function deleteByPatentid($patentId)
     {
-        return $this->pdo->exec(
-            sprintf("DELETE FROM patent WHERE patentid='%s';", $patentId));
+        $query = $this->pdo->prepare(self::DELETE_PATENT_QUERY);
+        $query->execute(array($patentId));
+        return $query->rowCount();
     }
 
-
+    //Modified with PDO prepare and execute statements
     public function save(Patent $patent)
     {
         $title          = $patent->getTitle();
@@ -83,11 +95,10 @@ class PatentRepository
         $file           = $patent->getFile();
 
         if ($patent->getPatentId() === null) {
-            $query = "INSERT INTO patent (company, date, title, description, file) "
-                . "VALUES ('$company', '$date', '$title', '$description', '$file')";
+            $query = $this->pdo->prepare(self::SAVE_PATENT_QUERY);
         }
 
-        $this->pdo->exec($query);
+        $query->execute(array($company, $date, $title, $description, $file));
         return $this->pdo->lastInsertId();
     }
 }

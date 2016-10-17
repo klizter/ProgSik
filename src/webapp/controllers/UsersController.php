@@ -102,7 +102,6 @@ class UsersController extends Controller
         $company   = $request->post('company');
 
         $validation = new EditUserFormValidation($email, $phone, $company);
-
         if ($validation->isGoodToGo()) {
             $user->setEmail(new Email($email));
             $user->setCompany($company);
@@ -110,7 +109,6 @@ class UsersController extends Controller
             $user->setFirstName($firstName);
             $user->setLastName($lastName);
             $this->userRepository->save($user);
-
             $this->app->flashNow('info', 'Your profile was successfully saved.');
             return $this->render('users/edit.twig', ['user' => $user]);
         }
