@@ -5,8 +5,7 @@ namespace tdt4237\webapp\controllers;
 use tdt4237\webapp\models\Phone;
 use tdt4237\webapp\models\Email;
 use tdt4237\webapp\models\User;
-use tdt4237\webapp\validation\EditUserFormValidation;
-use tdt4237\webapp\validation\RegistrationFormValidation;
+use tdt4237\webapp\validation\UserProfileValidation;
 
 class UsersController extends Controller
 {
@@ -63,7 +62,8 @@ class UsersController extends Controller
         $company = htmlspecialchars($request->post('company'));
 
 
-        $validation = new RegistrationFormValidation($username, $password, $firstName, $lastName, $phone, $company);
+        $validation = new UserProfileValidation();
+        $validation->validateNewUser($username, $password, $firstName, $lastName, $phone, $company);
 
         if ($validation->isGoodToGo()) {
             $password = $password;
@@ -101,7 +101,9 @@ class UsersController extends Controller
         $phone    = $request->post('phone');
         $company   = $request->post('company');
 
-        $validation = new EditUserFormValidation($email, $phone, $company);
+        $validation = new UserProfileValidation();
+        $validation->validateEditUser($firstName, $lastName, $phone, $company, $email);
+
         if ($validation->isGoodToGo()) {
             $user->setEmail(new Email($email));
             $user->setCompany($company);
@@ -113,7 +115,8 @@ class UsersController extends Controller
             return $this->render('users/edit.twig', ['user' => $user]);
         }
 
-        $this->app->flashNow('error', join('<br>', $validation->getValidationErrors()));
+        $errors = join("<br>\n", $validation->getValidationErrors());
+        $this->app->flashNow('error', $errors);
         $this->render('users/edit.twig', ['user' => $user]);
     }
 
