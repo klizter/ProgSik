@@ -55,12 +55,12 @@ class UsersController extends Controller
     public function create()
     {
         $request  = $this->app->request;
-        $username = $request->post('user');
-        $password = $request->post('pass');
-        $firstName = $request->post('first_name');
-        $lastName = $request->post('last_name');
-        $phone = $request->post('phone');
-        $company = $request->post('company');
+        $username = htmlspecialchars($request->post('user'));
+        $password = htmlspecialchars($request->post('pass'));
+        $firstName = htmlspecialchars($request->post('first_name'));
+        $lastName = htmlspecialchars($request->post('last_name'));
+        $phone = htmlspecialchars($request->post('phone'));
+        $company = htmlspecialchars($request->post('company'));
 
 
         $validation = new RegistrationFormValidation($username, $password, $firstName, $lastName, $phone, $company);
