@@ -33,14 +33,7 @@ class SessionsController extends Controller
         if ($this->auth->checkCredentials($user, $pass)) {
             $_SESSION['user'] = $user;
             setcookie("user", $user);
-            setcookie("password", $pass, 0, '', '', true);
             $isAdmin = $this->auth->user()->isAdmin();
-
-            /* if ($isAdmin) {
-                setcookie("isadmin", "yes", 0, '', '', false, true);
-            } else {
-                setcookie("isadmin", "no", 0, '', '', false, true);
-            } */
 
             $this->app->flash('info', "You are now successfully logged in as $user.");
             $this->app->redirect('/');
