@@ -24,12 +24,12 @@ class PatentValidation {
 
     public function validate($company, $title)
     {
-        if ($company == null) {
-            $this->validationErrors[] = "Company/User needed";
-
+        if (!preg_match('/.{1,70}/', $company)) {
+            $this->validationErrors[] = "Company name can't be empty and cannot exceed limit of 70 characters";
         }
-        if ($title == null) {
-            $this->validationErrors[] = "Title needed";
+
+        if (!preg_match('/.{1,35}/', $title)) {
+            $this->validationErrors[] = "Title can't be empty and cannot exceed limit of 35 characters";
         }
 
         return $this->validationErrors;
