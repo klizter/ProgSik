@@ -29,17 +29,23 @@ class SessionsController extends Controller
         $request = $this->app->request;
         $user    = $request->post('user');
         $pass    = $request->post('pass');
+        # post isadmin? 
 
         if ($this->auth->checkCredentials($user, $pass)) {
             $_SESSION['user'] = $user;
             setcookie("user", $user);
-            setcookie("password",  $pass);
+            #sette på secure og httpOnly flag
+            setcookie("password", $pass, 0, '', '', true); #fjerne denne
             $isAdmin = $this->auth->user()->isAdmin();
 
+            # fjerne dette
+            #sette på secure og httpOnly flag
+            # setcookie( name, value, expire, path, domain, secure, httponly);
+            # setcookie( 'UserName', 'Bob', 0, '/forums', 'www.example.com', isset($_SERVER["HTTPS"]), true);
             if ($isAdmin) {
-                setcookie("isadmin", "yes");
+                setcookie("isadmin", "yes", 0, '', '', false, true);
             } else {
-                setcookie("isadmin", "no");
+                setcookie("isadmin", "no", 0, '', '', false, true);
             }
 
             $this->app->flash('info', "You are now successfully logged in as $user.");
