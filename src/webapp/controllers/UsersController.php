@@ -119,6 +119,17 @@ class UsersController extends Controller
 
     public function destroy($username)
     {
+
+        if ($this->auth->guest()) {
+            $this->app->flash('info', 'You must be logged in as administrator to perform this action');
+            $this->app->redirect('/login');
+        }
+
+        if (! $this->auth->isAdmin()) {
+            $this->app->flash('info', "You must be administrator to delete users.");
+            $this->app->redirect('/');
+        }
+
         if ($this->userRepository->deleteByUsername($username) === 1) {
             $this->app->flash('info', "Sucessfully deleted '$username'");
             $this->app->redirect('/admin');

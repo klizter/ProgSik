@@ -107,6 +107,16 @@ class PatentsController extends Controller
 
     public function destroy($patentId)
     {
+        if ($this->auth->guest()) {
+            $this->app->flash('info', 'You must be logged in as administrator to perform this action');
+            $this->app->redirect('/login');
+        }
+
+        if (! $this->auth->isAdmin()) {
+            $this->app->flash('info', "You must be administrator to delete users.");
+            $this->app->redirect('/');
+        }
+
         if ($this->patentRepository->deleteByPatentid($patentId) === 1) {
             $this->app->flash('info', "Sucessfully deleted '$patentId'");
             $this->app->redirect('/admin');
