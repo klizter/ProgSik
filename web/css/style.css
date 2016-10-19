@@ -39,4 +39,6 @@ th, td
     margin-top: 50px;
 }
 
-
+.ui.form .error.message {
+    display: block;
+}
