@@ -4,9 +4,11 @@
     <h2>Edit profile</h2>
 
     <form action="" method="post" class="ui form">
-        <div class="ui error message">
-            {{ flash.error }}
-        </div>
+        {% if flash.error %}
+            <div class="ui error message">
+                {{ flash.error|raw }}
+            </div>
+        {% endif %}
 
         <div class="field">
             <label>First name</label>
