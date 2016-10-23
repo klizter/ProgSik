@@ -14,6 +14,8 @@ class User
     protected $company = null;
     protected $email   = null;
     protected $isAdmin = 0;
+    protected $login_atempts;
+    protected $time_out;
 
     function __construct($username, $hash, $firstName, $lastName, $phone, $company)
     {
@@ -23,6 +25,8 @@ class User
         $this->lastName = $lastName;
         $this->phone = $phone;
         $this->company = $company;
+        $this->login_atempts = 0;
+        $this->time_out = null;
     }
 
     public function getUserId()
@@ -102,6 +106,22 @@ class User
     public function setLastName($lastName) {
         $this->lastName = $lastName;
 
+    }
+
+    public function getLogin_atempts() {
+        return $this->login_atempts;
+    }
+
+    public function setLogin_atempts($login_atempts) {
+        $this->login_atempts = $login_atempts;
+    }
+
+    public function getTime_out() {
+        return $this->time_out;
+    }
+
+    public function setTime_out($time_out) {
+        $this->time_out = $time_out;
     }
 
     public function isAdmin()

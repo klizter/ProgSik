@@ -17,7 +17,7 @@ class Sql
      */
     static function up()
     {
-        $q1 = "CREATE TABLE users (id INTEGER PRIMARY KEY, user VARCHAR(50), pass VARCHAR(50), email varchar(50) default null, first_name varchar(50), last_name varchar(50), phone varchar (8), company varchar(50), isadmin INTEGER);";
+        $q1 = "CREATE TABLE users (id INTEGER PRIMARY KEY, user VARCHAR(50), pass VARCHAR(50), email varchar(50) default null, first_name varchar(50), last_name varchar(50), phone varchar (8), company varchar(50), isadmin INTEGER, login_atempts INTEGER, time_out VARCHAR(50));";
         $q6 = "CREATE TABLE patent (patentId INTEGER PRIMARY KEY AUTOINCREMENT, company TEXT NOT NULL, title TEXT NOT NULL, file TEXT NOT NULL, description TEXT NOT NULL, date TEXT NOT NULL, FOREIGN KEY(patentId) REFERENCES users(company));";
 
         self::$pdo->exec($q1);
@@ -35,9 +35,9 @@ class Sql
         $hash2 = Hash::make('techit');
         $hash3 = Hash::make('mundbjar');
 
-        $q1 = "INSERT INTO users(user, pass, isadmin, first_name, last_name, phone, company, email) VALUES ('systemmanager', '$hash1', 1, 'Approv', 'Patents', '53290672', 'Patentsy AS', 'systemmanager@patentsy.com')";
-        $q2 = "INSERT INTO users(user, pass, isadmin, first_name, last_name, phone, company, email) VALUES ('ittechnican', '$hash2', 1, 'Robert', 'Green', '92300847', 'Patentsy AS', 'ittechnican@patentsy.com')";
-        $q3 = "INSERT INTO users(user, pass, isadmin, first_name, last_name, phone, company, email) VALUES ('ceobjarnitorgmund', '$hash3', 1, 'Bjarni', 'Torgmund', '32187625', 'Patentsy AS', 'ceobjarnitorgmund@patentsy.com')";
+        $q1 = "INSERT INTO users(user, pass, isadmin, first_name, last_name, phone, company, email, login_atempts, time_out) VALUES ('systemmanager', '$hash1', 1, 'Approv', 'Patents', '53290672', 'Patentsy AS', 'systemmanager@patentsy.com',0,null)";
+        $q2 = "INSERT INTO users(user, pass, isadmin, first_name, last_name, phone, company, email, login_atempts, time_out) VALUES ('ittechnican', '$hash2', 1, 'Robert', 'Green', '92300847', 'Patentsy AS', 'ittechnican@patentsy.com',0, null)";
+        $q3 = "INSERT INTO users(user, pass, isadmin, first_name, last_name, phone, company, email, login_atempts, time_out) VALUES ('ceobjarnitorgmund', '$hash3', 1, 'Bjarni', 'Torgmund', '32187625', 'Patentsy AS', 'ceobjarnitorgmund@patentsy.com',0, null)";
 
         self::$pdo->exec($q1);
         self::$pdo->exec($q2);
