@@ -6,3 +6,4 @@ app.db
 composer.phar
 .DS_Store
 web/uploads/
+idea/*

@@ -18,8 +18,7 @@ class PatentsController extends Controller
     public function index()
     {
         $patent = $this->patentRepository->all();
-        if($patent != null)
-        {
+        if ($patent != null) {
             $patent->sortByDate();
         }
         $users = $this->userRepository->all();
@@ -32,7 +31,6 @@ class PatentsController extends Controller
         $username = $_SESSION['user'];
         $user = $this->userRepository->findByUser($username);
         $request = $this->app->request;
-
 
         $this->render('patents/show.twig', [
             'patent' => $patent,
@@ -61,15 +59,16 @@ class PatentsController extends Controller
             $this->app->flash("info", "You must be logged on to register a patent");
             $this->app->redirect("/login");
         } else {
-            $request     = $this->app->request;
-            $title       = $request->post('title');
+            $request = $this->app->request;
+            $title = $request->post('title');
             $description = $request->post('description');
-            $company     = $request->post('company');
-            $date        = date("dmY");
-            $file = $this -> startUpload();
+            $company = $request->post('company');
+            $date = date("dmY");
 
             $validation = new PatentValidation($title, $description);
+
             if ($validation->isGoodToGo()) {
+                $file = $this->startUpload();
                 $patent = new Patent($company, $title, $description, $date, $file);
                 $patent->setCompany($company);
                 $patent->setTitle($title);
@@ -80,26 +79,33 @@ class PatentsController extends Controller
                 $this->app->redirect('/patents/' . $savedPatent . '?msg="Patent succesfully registered');
             }
         }
-
-            $this->app->flashNow('error', join('<br>', $validation->getValidationErrors()));
-            $this->app->render('patents/new.twig');
+        $this->app->flash('info', join('<br>', $validation->getValidationErrors()));
+        $this->app->redirect('/patents/new');
     }
 
     public function startUpload()
     {
-        if(isset($_POST['submit']))
-        {
-            $target_dir =  getcwd()."/web/uploads/";
-            $targetFile = $target_dir . basename($_FILES['uploaded']['name']);
-            if(move_uploaded_file($_FILES['uploaded']['tmp_name'], $targetFile))
-            {
-                return $targetFile;
-            }
+        $target_dir = getcwd() . "/web/uploads/";
+        $targetFile = $target_dir . basename($_FILES['uploaded']['name']);
+        if (move_uploaded_file($_FILES['uploaded']['tmp_name'], $targetFile)) {
+            return $targetFile;
         }
+        return false;
     }
 
     public function destroy($patentId)
     {
+        if ($this->auth->guest()) {
+            $this->app->flash('info', 'You must be logged in as administrator to perform this action');
+            $this->app->redirect('/login');
+        }
+
+        if (!$this->auth->isAdmin()) {
+            $this->app->flash('info', "You must be an administrator to delete patents.");
+            $this->app->redirect('/');
+        }
+
+
         if ($this->patentRepository->deleteByPatentid($patentId) === 1) {
             $this->app->flash('info', "Sucessfully deleted '$patentId'");
             $this->app->redirect('/admin');
