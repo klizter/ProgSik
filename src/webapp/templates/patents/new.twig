@@ -4,10 +4,12 @@
     <h2>Register patent</h2>
 
     <form action="#" method="post" enctype="multipart/form-data" class="ui form">
+        {% if flash.error %}
         <div class="ui error message">
             {{ flash.error }}
         </div>
-
+        {% endif %}
+        
         <div class="field">
             <label>Title</label>
             <input type = "text" name="title">

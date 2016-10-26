@@ -31,18 +31,10 @@ class PatentsController extends Controller
         $username = $_SESSION['user'];
         $user = $this->userRepository->findByUser($username);
         $request = $this->app->request;
-        $message = $request->get('msg');
-        $variables = [];
-
-        if ($message) {
-            $variables['msg'] = $message;
-
-        }
 
         $this->render('patents/show.twig', [
             'patent' => $patent,
             'user' => $user,
-            'flash' => $variables
         ]);
 
     }
