@@ -28,14 +28,20 @@ class PatentsController extends Controller
     public function show($patentId)
     {
         $patent = $this->patentRepository->find($patentId);
-        $username = $_SESSION['user'];
-        $user = $this->userRepository->findByUser($username);
-        $request = $this->app->request;
+        if ($this->auth->check()) {
+            $username = $_SESSION['user'];
+            $user = $this->userRepository->findByUser($username);
+            $request = $this->app->request;
 
-        $this->render('patents/show.twig', [
-            'patent' => $patent,
-            'user' => $user,
-        ]);
+            $this->render('patents/show.twig', [
+                'patent' => $patent,
+                'user' => $user,
+            ]);
+        }
+        else {
+            $this->app->flash('info', "You need to be logged in to view details of a patent");
+            $this->app->redirect("/");
+        }
 
     }
 
