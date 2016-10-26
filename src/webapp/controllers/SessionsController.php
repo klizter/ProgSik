@@ -29,18 +29,45 @@ class SessionsController extends Controller
         $request = $this->app->request;
         $user    = $request->post('user');
         $pass    = $request->post('pass');
+        $login_atempts = $this->userRepository->getLoginAtempts($user);
+        $time_stamp = $this->userRepository->getTimeOut($user);
 
-        if ($this->auth->checkCredentials($user, $pass)) {
-            $_SESSION['user'] = $user;
-            setcookie("user", $user);
-            $isAdmin = $this->auth->user()->isAdmin();
-
-            $this->app->flash('info', "You are now successfully logged in as $user.");
-            $this->app->redirect('/');
-            return;
+        if(!is_null($time_stamp) and date("Y-m-d H:i:s") > date($time_stamp)){
+            $this->userRepository->clearTimeOut($user);
+            $this->userRepository->clearLoginAtempts($user);
+            $login_atempts = $this->userRepository->getLoginAtempts($user);
+            $time_stamp = $this->userRepository->getTimeOut($user);
         }
 
-        $this->app->flashNow('error', 'Incorrect user/pass combination.');
+        if(is_null($time_stamp) or date("Y-m-d H:i:s") > date($time_stamp)){
+
+            $this->userRepository->updateLoginAtempts($user);
+
+            if ($this->auth->checkCredentials($user, $pass)) {
+                $_SESSION['user'] = $user;
+                setcookie("user", $user);
+                setcookie("password",  $pass);
+                $isAdmin = $this->auth->user()->isAdmin();
+
+                if ($isAdmin) {
+                    setcookie("isadmin", "yes");
+                } else {
+                    setcookie("isadmin", "no");
+                }
+
+                $this->userRepository->clearTimeOut($user);
+                $this->userRepository->clearLoginAtempts($user);
+
+                $this->app->flash('info', "You are now successfully logged in as $user.");
+                $this->app->redirect('/');
+                return;
+            }else{
+                $this->app->flashNow('error', 'Incorrect user/pass combination.');
+            }
+        }else{
+            $this->app->flashNow('error', 'You have typed in password to many times. You are timed out and unavailable to log in for 1 minute.');
+        }
+
         $this->render('sessions/new.twig', []);
     }
 
