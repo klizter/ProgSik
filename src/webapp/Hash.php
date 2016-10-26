@@ -10,7 +10,7 @@ class Hash
 
     public function __construct()
     {
-        $salt = base64_encode(openssl_random_pseudo_bytes(30));
+        $salt = base64_encode(openssl_random_pseudo_bytes(8));
     }
 
     public static function make($plaintext)
