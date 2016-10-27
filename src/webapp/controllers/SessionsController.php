@@ -45,15 +45,7 @@ class SessionsController extends Controller
 
             if ($this->auth->checkCredentials($user, $pass)) {
                 $_SESSION['user'] = $user;
-                setcookie("user", $user);
-                setcookie("password",  $pass);
                 $isAdmin = $this->auth->user()->isAdmin();
-
-                if ($isAdmin) {
-                    setcookie("isadmin", "yes");
-                } else {
-                    setcookie("isadmin", "no");
-                }
 
                 $this->userRepository->clearTimeOut($user);
                 $this->userRepository->clearLoginAtempts($user);
