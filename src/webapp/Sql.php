@@ -29,22 +29,12 @@ class Sql
         self::insertPatents();
     }
 
-    static function insertDummyUsers()
-    {
-        $hash1 = Hash::make(bin2hex(openssl_random_pseudo_bytes(2)));
-        $hash2 = Hash::make('techit');
-        $hash3 = Hash::make('mundbjar');
-
-        $q1 = "INSERT INTO users(user, pass, isadmin, first_name, last_name, phone, company, email, login_atempts, time_out) VALUES ('systemmanager', '$hash1', 1, 'Approv', 'Patents', '53290672', 'Patentsy AS', 'systemmanager@patentsy.com',0,null)";
-        $q2 = "INSERT INTO users(user, pass, isadmin, first_name, last_name, phone, company, email, login_atempts, time_out) VALUES ('ittechnican', '$hash2', 1, 'Robert', 'Green', '92300847', 'Patentsy AS', 'ittechnican@patentsy.com',0, null)";
-        $q3 = "INSERT INTO users(user, pass, isadmin, first_name, last_name, phone, company, email, login_atempts, time_out) VALUES ('ceobjarnitorgmund', '$hash3', 1, 'Bjarni', 'Torgmund', '32187625', 'Patentsy AS', 'ceobjarnitorgmund@patentsy.com',0, null)";
+    static function insertDummyUsers(){
+        $q1 = "INSERT INTO users(user, pass, isadmin, first_name, last_name, phone, company, email, login_atempts, time_out) VALUES ('Thecarbonbreezes', '985d3eb9038fed6d5e08046baae1add3b633f55ff4c5ff6694dc1a596965610d', 1, 'Bjarni', 'Torgmund', '32187625', 'Patentsy AS', 'ceobjarnitorgmund@patentsy.com',0, null)";
 
         self::$pdo->exec($q1);
-        self::$pdo->exec($q2);
-        self::$pdo->exec($q3);
 
-
-        print "[tdt4237] Done inserting dummy users.".PHP_EOL;
+        print "[tdt4237] Done inserting admin.".PHP_EOL;
     }
 
     static function insertPatents() {

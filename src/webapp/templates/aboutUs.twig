@@ -17,26 +17,36 @@
 
     {% if users %}
     <div class="ui link cards">
-        {% for user in users %}
-            {% if user.userid < 4 %}
-            <div class="card">
-                <div class="content">
-                    <div class="header">
-                        {% if user.userid == 1 %}
-                            Systemmanager
-                        {% elseif user.userid == 2 %}
-                            IT-technican
-                        {% elseif user.userid == 3 %}
-                            CEO
-                        {% endif %}
-                    </div>
-                    <div class="description">
-                        <a href="/user/{{ user.email|raw }}">{{ user.email|raw }}</a>
-                    </div>
+        <div class="card">
+            <div class="content">
+                 <div class="header">
+                    Systemmanager
+                </div>
+                <div class="description">
+                    systemmanager@patentsy.com
                 </div>
             </div>
-            {% endif %}
-        {% endfor %}
+        </div>
+        <div class="card">
+            <div class="content">
+                 <div class="header">
+                    IT-technican
+                </div>
+                <div class="description">
+                    ttechnican@patentsy.com
+                </div>
+            </div>
+        </div>
+        <div class="card">
+            <div class="content">
+                 <div class="header">
+                    CEO
+                </div>
+                <div class="description">
+                    ceobjarnitorgmund@patentsy.com
+                </div>
+            </div>
+        </div>
     </div>
     {% else %}
     <p>No users are in the database.</p>
