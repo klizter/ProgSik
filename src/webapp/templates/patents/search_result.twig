@@ -1,0 +1,35 @@
+{% extends 'layouts/base.twig' %}
+
+{% block content %}
+    <h2>Patent Search Result</h2>
+
+    <table class="ui single line table">
+        <thead>
+            <tr>
+        		<th> Title </th>
+        		<th> Company/User </th>
+        		<th> Description </th>
+        	</tr>
+        </thead>
+
+        <tbody>
+            {% for patent in patents %}
+        	<tr>
+        		<td><a href="/patents/{{patent.patentId}}">{{ patent.title }}</a></td>
+                {% if patent.company == user.username %}
+                    <td><a href="/users/{{ patent.company}}">{{ patent.company }}</a></td>
+                {% else %}
+        		<td> {{ patent.company }} </td>
+                {% endif %}
+        		<td> {{ patent.description }}</td>
+        	</tr>
+        	{% endfor %}
+
+            {% if patents is empty %}
+            <tr>
+                <td colspan="3">There are no patents matching the search word you just entered!</td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+{% endblock %}

@@ -17,6 +17,13 @@
                     <a href="{{ urlFor('showpatents') }}" class="item">Show patents</a>
                     <a href="{{ urlFor('editprofile') }}" class="item">Edit profile</a>
                     <a href="{{ urlFor('registerpatent') }}" class="item">Register patent</a>
+                    <form action="#" method="post" enctype="multipart/form-data" class="ui form patent-search-form">
+                        <div class="field">
+                            <label>Search Patents</label>
+                            <input type = "text" name="keyword">
+                        </div>
+                         <input type="submit" name="submit" value="Go" class="positive ui button">
+                    </form>
                     {% endif %}
 
                     {% if isAdmin %}

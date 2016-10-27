@@ -99,6 +99,19 @@ class PatentsController extends Controller
         return false;
     }
 
+    public function search()
+    {
+        $request = $this->app->request;
+        $keyword = $request->post('keyword');
+
+        $patents = $this->patentRepository->findMatchingKeyword($keyword);
+        if (sizeof($patents) != 0) {
+            $patents->sortByDate();
+        }
+        $users = $this->userRepository->all();
+        $this->render('patents/search_result.twig', ['patents' => $patents, 'users' => $users]);
+    }
+
     public function destroy($patentId)
     {
         if ($this->auth->guest()) {
