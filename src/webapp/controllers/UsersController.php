@@ -67,8 +67,9 @@ class UsersController extends Controller
 
         if ($validation->isGoodToGo()) {
             $password = $password;
-            $password = $this->hash->make($password);
-            $user = new User($username, $password, $firstName, $lastName, $phone, $company);
+            $salt = base64_encode(openssl_random_pseudo_bytes(8));
+            $password = $this->hash->make($password,$salt);
+            $user = new User($username, $password, $salt, $firstName, $lastName, $phone, $company);
             $this->userRepository->save($user);
 
             $this->app->flash('info', 'Thanks for creating a user. Now log in.');

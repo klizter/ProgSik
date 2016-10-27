@@ -6,22 +6,16 @@ use Symfony\Component\Config\Definition\Exception\Exception;
 
 class Hash
 {  
-    static $salt = '';
+    public function __construct(){}
 
-    public function __construct()
+    public static function make($plaintext, $salt)
     {
-        $salt = base64_encode(openssl_random_pseudo_bytes(8));
+        return hash('sha256', $plaintext . $salt);
     }
 
-    public static function make($plaintext)
+    public function check($plaintext, $hash, $salt)
     {
-        
-        return hash('sha256', $plaintext . Hash::$salt);
-    }
-
-    public function check($plaintext, $hash)
-    {
-        return $this->make($plaintext) === $hash;
+        return $this->make($plaintext,$salt) === $hash;
     }
 
 }

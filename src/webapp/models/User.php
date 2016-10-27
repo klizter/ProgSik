@@ -8,6 +8,7 @@ class User
     protected $userId  = null;
     protected $username;
     protected $hash;
+    protected $salt;
     protected $firstName;
     protected $lastName;
     protected $phone;
@@ -17,10 +18,11 @@ class User
     protected $login_atempts;
     protected $time_out;
 
-    function __construct($username, $hash, $firstName, $lastName, $phone, $company)
+    function __construct($username, $hash, $salt, $firstName, $lastName, $phone, $company)
     {
         $this->username = $username;
         $this->hash = $hash;
+        $this->salt = $salt;
         $this->firstName = $firstName;
         $this->lastName = $lastName;
         $this->phone = $phone;
@@ -59,6 +61,17 @@ class User
     public function setHash($hash)
     {
         $this->hash = $hash;
+        return $this;
+    }
+
+     public function getSalt()
+    {
+        return $this->salt;
+    }
+
+    public function setSalt($salt)
+    {
+        $this->salt = $salt;
         return $this;
     }
 
