@@ -17,7 +17,7 @@ class Sql
      */
     static function up()
     {
-        $q1 = "CREATE TABLE users (id INTEGER PRIMARY KEY, user VARCHAR(50), pass VARCHAR(50), email varchar(50) default null, first_name varchar(50), last_name varchar(50), phone varchar (8), company varchar(50), isadmin INTEGER, login_atempts INTEGER, time_out VARCHAR(50));";
+        $q1 = "CREATE TABLE users (id INTEGER PRIMARY KEY, user VARCHAR(50), pass VARCHAR(50), salt VARCHAR(50), email varchar(50) default null, first_name varchar(50), last_name varchar(50), phone varchar (8), company varchar(50), isadmin INTEGER, login_atempts INTEGER, time_out VARCHAR(50));";
         $q6 = "CREATE TABLE patent (patentId INTEGER PRIMARY KEY AUTOINCREMENT, company TEXT NOT NULL, title TEXT NOT NULL, file TEXT NOT NULL, description TEXT NOT NULL, date TEXT NOT NULL, FOREIGN KEY(patentId) REFERENCES users(company));";
 
         self::$pdo->exec($q1);
@@ -30,7 +30,8 @@ class Sql
     }
 
     static function insertDummyUsers(){
-        $q1 = "INSERT INTO users(user, pass, isadmin, first_name, last_name, phone, company, email, login_atempts, time_out) VALUES ('Thecarbonbreezes', '985d3eb9038fed6d5e08046baae1add3b633f55ff4c5ff6694dc1a596965610d', 1, 'Bjarni', 'Torgmund', '32187625', 'Patentsy AS', 'ceobjarnitorgmund@patentsy.com',0, null)";
+
+        $q1 = "INSERT INTO users(user, pass, salt, isadmin, first_name, last_name, phone, company, email, login_atempts, time_out) VALUES ('Thecarbonbreezes', 'dded1fe57b83acb92adf139bcc8514e3c25f27ff9906257e79840f330a2023f1', '0Bhs1s1Mly0=', 1, 'Bjarni', 'Torgmund', '32187625', 'Patentsy AS', 'ceobjarnitorgmund@patentsy.com',0, null)";
 
         self::$pdo->exec($q1);
 

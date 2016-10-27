@@ -10,7 +10,7 @@ use tdt4237\webapp\models\User;
 
 class UserRepository
 {
-    const SAVE_NEW_USER_QUERY = 'INSERT INTO users(user, pass, first_name, last_name, phone, company, isadmin, login_atempts, time_out) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?)';
+    const SAVE_NEW_USER_QUERY = 'INSERT INTO users(user, pass, salt, first_name, last_name, phone, company, isadmin, login_atempts, time_out) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)';
     const SAVE_EXISTING_USER_QUERY = 'UPDATE users SET email=?, first_name=?, last_name=?, isadmin=?, phone=?, company=?, login_atempts=?, time_out=? WHERE id=?';
     const FIND_USER_QUERY = 'SELECT * FROM users WHERE user=?';
     const DELETE_USER_QUERY = 'DELETE FROM users WHERE user=?';
@@ -32,7 +32,7 @@ class UserRepository
 
     public function makeUserFromRow(array $row)
     {
-        $user = new User($row['user'], $row['pass'], $row['first_name'], $row['last_name'], $row['phone'], $row['company']);
+        $user = new User($row['user'], $row['pass'], $row['salt'], $row['first_name'], $row['last_name'], $row['phone'], $row['company']);
         $user->setUserId($row['id']);
         $user->setFirstName($row['first_name']);
         $user->setLastName($row['last_name']);
@@ -110,7 +110,7 @@ class UserRepository
     public function saveNewUser(User $user)
     {
         $query = $this->pdo->prepare(self::SAVE_NEW_USER_QUERY);
-        return $query->execute(array($user->getUsername(), $user->getHash(), $user->getFirstName(), $user->getLastName(), $user->getPhone(), $user->getCompany(), $user->isAdmin(), $user->getLogin_atempts(), $user->getTime_out()));
+        return $query->execute(array($user->getUsername(), $user->getHash(), $user->getSalt(), $user->getFirstName(), $user->getLastName(), $user->getPhone(), $user->getCompany(), $user->isAdmin(), $user->getLogin_atempts(), $user->getTime_out()));
     }
 
     //Modified with PDO prepared statement
@@ -195,5 +195,4 @@ class UserRepository
 
         return;
     }
-
 }
