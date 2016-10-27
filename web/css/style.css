@@ -42,3 +42,13 @@ th, td
 .ui.form .error.message {
     display: block;
 }
+
+.patent-search-form {
+    width: 100%;
+    margin-top: 100px;
+    padding: .85714286em 1.14285714em;
+}
+
+.patent-search-form > div {
+    width: 100%;
+}

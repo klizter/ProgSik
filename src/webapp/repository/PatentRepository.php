@@ -77,6 +77,21 @@ class PatentRepository
         );
     }
 
+    public function findMatchingKeyword($keyword)
+    {
+        $query = $this->pdo->prepare('SELECT * FROM patent WHERE title LIKE ? OR company LIKE ?');
+        $query->execute(array($keyword,$keyword));
+
+        $fetch = $query->fetchAll();
+        if(count($fetch) == 0) {
+            return [];
+        }
+
+        return new PatentCollection(
+            array_map([$this, 'makePatentFromRow'], $fetch)
+        );
+    }
+
     //Modified with PDO prepare and execute statements
     public function deleteByPatentid($patentId)
     {
