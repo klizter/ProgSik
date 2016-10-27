@@ -85,14 +85,8 @@ class Auth
     public function logout()
     {
         session_destroy();
-        unset($_COOKIE['user']);
-        setcookie('user', '', 1, '/');
-        unset($_COOKIE['password']);
-        setcookie('password', '', 1, '/');
         unset($_COOKIE['PHPSESSID']);
         setcookie('PHPSESSID', '', 1, '/');
-        unset($_COOKIE['isadmin']);
-        setcookie('isadmin', '', 1, '/');
     }
 
 }
