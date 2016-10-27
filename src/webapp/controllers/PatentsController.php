@@ -101,6 +101,11 @@ class PatentsController extends Controller
 
     public function search()
     {
+        if ($this->auth->guest()) {
+            $this->app->flash('info', 'You must be logged in to perform this action');
+            $this->app->redirect('/login');
+        }
+
         $request = $this->app->request;
         $keyword = $request->post('keyword');
 
