@@ -8,29 +8,32 @@ class PatentValidation {
 
     private $validationErrors = [];
 
-    public function __construct($company, $title) {
-        return $this->validate($company, $title);
+    public function __construct($title, $company, $description) {
+        $this->validate($title, $company, $description);
     }
 
     public function isGoodToGo()
     {
-        return \count($this->validationErrors) ===0;
+        return empty($this->validationErrors);
     }
 
     public function getValidationErrors()
     {
-    return $this->validationErrors;
+        return $this->validationErrors;
     }
 
-
-    public function validate($company, $title)
+    public function validate($title, $company, $description)
     {
-        if (!preg_match('/.{1,70}/', $company)) {
+        if ((strlen($title) > 35) or empty($title)) {
+            $this->validationErrors[] = "Title can't be empty and cannot exceed limit of 35 characters";
+        }
+
+        if ((strlen($company) > 70) or empty($company)) {
             $this->validationErrors[] = "Company name can't be empty and cannot exceed limit of 70 characters";
         }
 
-        if (!preg_match('/.{1,35}/', $title)) {
-            $this->validationErrors[] = "Title can't be empty and cannot exceed limit of 35 characters";
+        if ((strlen($description) > 400) or empty($description)) {
+            $this->validationErrors[] = "Description can't be empty and cannot exceed limit of 400 characters";
         }
 
         $target_dir = getcwd() . "/web/uploads/";
@@ -50,7 +53,6 @@ class PatentValidation {
         if($file_size > 2097152){
             $this->validationErrors[]  ='File size must be under 2 MB';
         }
-        return $this->validationErrors;
     }
 
 

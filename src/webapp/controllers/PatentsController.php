@@ -71,7 +71,7 @@ class PatentsController extends Controller
             $company = $request->post('company');
             $date = date("dmY");
 
-            $validation = new PatentValidation($title, $description);
+            $validation = new PatentValidation($title, $company, $description);
 
             if ($validation->isGoodToGo()) {
                 $file = $this->startUpload();
