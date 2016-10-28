@@ -44,13 +44,13 @@ class UserProfileValidation
     }
 
     public function validatePassword($password) {
-        if (!preg_match('/.{8,254}/', $password)) {
+        if ((strlen($password) < 8) or (strlen($password) > 254)) {
             $this->validationErrors[] = 'Password must at least be 8 characters and at most 254 characters long';
         }
     }
 
     public function validateUsername($username) {
-        if (!preg_match('/.{3,254}/', $username)) {
+        if ((strlen($username) > 35) or (strlen($username) < 3)) {
             $this->validationErrors[] = 'Username must at least be 3 characters and at most 254 characters long';
         }
 
@@ -60,19 +60,19 @@ class UserProfileValidation
     }
 
     public function validateFirstName($firstName) {
-        if (!preg_match('/.{1,35}/', $firstName)) {
+        if ((strlen($firstName) > 35) or empty($firstName)) {
             $this->validationErrors[] = "First name can't be empty and cannot exceed limit of 35 characters";
         }
     }
 
     public function validateLastName($lastName) {
-        if (!preg_match('/.{1,35}/', $lastName)) {
+        if ((strlen($lastName) > 35) or empty($lastName)) {
             $this->validationErrors[] = "Last name can't be empty and cannot exceed limit of 35 characters";
         }
     }
 
     public function validateCompany($company) {
-        if (!preg_match('/.{1,70}/', $company)) {
+        if ((strlen($company) > 70) or empty($company)) {
             $this->validationErrors[] = "Company name can't be empty and cannot exceed limit of 70 characters";
             return;
         }
@@ -83,13 +83,13 @@ class UserProfileValidation
     }
 
     public function validatePhone($phone) {
-        if (!preg_match('/.{8,8}/', $phone)) {
+        if (strlen($phone) != 8) {
             $this->validationErrors[] = 'Phone number has to be exactly 8 digits';
         }
     }
 
     public function validateEmail($email) {
-        if (!preg_match('/.{3,254}/', $email)) {
+        if ((strlen($email) > 254) or empty($email)) {
             $this->validationErrors[] = 'Email must at least be 3 characters and at most 254 characters long';
         }
 
