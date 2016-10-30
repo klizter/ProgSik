@@ -16,8 +16,12 @@ chmod(__DIR__ . '/../web/uploads', 0777);
 $app = new Slim([
     'templates.path' => __DIR__.'/webapp/templates/',
     'debug' => false,
-    'view' => new Twig()
-
+    'view' => new Twig(),
+    'cookies.encrypt' => true,
+    'cookies.secret_key' => '242E8DDB6CD575600B417E541C049BD33ED9BFEEB53303AA0F4709909DF43076',
+    'cookies.cipher' => MCRYPT_RIJNDAEL_256,
+    'cookies.cipher_mode' => MCRYPT_MODE_CBC,
+    'cookies.secure' => true
 ]);
 
 $view = $app->view();
