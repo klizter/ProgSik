@@ -54,7 +54,7 @@ class UsersController extends Controller
     public function create()
     {
         $request  = $this->app->request;
-        $username = htmlspecialchars($request->post('user'));
+        $username = htmlspecialchars(($request->post('user')));
         $password = htmlspecialchars($request->post('pass'));
         $firstName = htmlspecialchars($request->post('first_name'));
         $lastName = htmlspecialchars($request->post('last_name'));
@@ -96,11 +96,11 @@ class UsersController extends Controller
         $user = $this->auth->user();
 
         $request    = $this->app->request;
-        $email      = $request->post('email');
-        $firstName  = $request->post('first_name');
-        $lastName  = $request->post('last_name');
-        $phone    = $request->post('phone');
-        $company   = $request->post('company');
+        $email      = htmlspecialchars($request->post('email'));
+        $firstName  = htmlspecialchars($request->post('first_name'));
+        $lastName  = htmlspecialchars($request->post('last_name'));
+        $phone    = htmlspecialchars($request->post('phone'));
+        $company   = htmlspecialchars($request->post('company'));
 
         $validation = new UserProfileValidation();
         $validation->validateEditUser($firstName, $lastName, $phone, $company, $email);
