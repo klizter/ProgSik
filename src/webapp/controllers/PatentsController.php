@@ -66,9 +66,9 @@ class PatentsController extends Controller
             $this->app->redirect("/login");
         } else {
             $request = $this->app->request;
-            $title = $request->post('title');
-            $description = $request->post('description');
-            $company = $request->post('company');
+            $title = htmlspecialchars($request->post('title'));
+            $description = htmlspecialchars($request->post('description'));
+            $company = htmlspecialchars($request->post('company'));
             $date = date("dmY");
 
             $validation = new PatentValidation($title, $company, $description);
